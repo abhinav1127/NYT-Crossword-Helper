@@ -35,3 +35,13 @@ export const returnToStart = function () {
 	const firstClueAcross = document.querySelector(".xwd__clue--li");
 	(firstClueAcross as HTMLElement)?.click();
 };
+
+export const rightArrowEvent = createKeyboardEvent("keydown", {
+	key: "ArrowRight",
+	code: "ArrowRight",
+	keyCode: 39,
+	which: 39,
+	bubbles: true,
+	cancelable: true,
+	composed: true,
+});

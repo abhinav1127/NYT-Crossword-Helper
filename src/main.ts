@@ -1,4 +1,12 @@
-import { tabEvent, deleteEvent, clickEvent, vowelCharCodes, createKeyboardEvent, returnToStart } from "./events";
+import {
+	tabEvent,
+	deleteEvent,
+	clickEvent,
+	vowelCharCodes,
+	createKeyboardEvent,
+	returnToStart,
+	rightArrowEvent,
+} from "./events";
 
 const enableAutocheck = (): void => {
 	const autocheckButton = Array.from(document.querySelectorAll("button.xwd__menu--btnlink")).find(
@@ -50,6 +58,28 @@ const clearPuzzle = (): void => {
 	}
 };
 
+const clearPuzzle2 = (): void => {
+	returnToStart();
+	const acrossClueListWrapper = document.querySelector(".xwd__clue-list--list");
+	const acrossCluesLength = acrossClueListWrapper.querySelectorAll(".xwd__clue--li").length;
+
+	for (let i = 0; i < acrossCluesLength; i++) {
+		const currSelectedLetters = document.querySelectorAll(".xwd__cell--highlighted");
+		let selectedCell = document.querySelector(".xwd__cell--selected");
+
+		while (selectedCell.id != currSelectedLetters[currSelectedLetters.length - 1].id) {
+			selectedCell.dispatchEvent(rightArrowEvent);
+			selectedCell = document.querySelector(".xwd__cell--selected");
+		}
+
+		while (selectedCell.id != currSelectedLetters[0].id) {
+			selectedCell.dispatchEvent(deleteEvent);
+			selectedCell = document.querySelector(".xwd__cell--selected");
+		}
+		document.activeElement?.dispatchEvent(tabEvent);
+	}
+};
+
 const main = (): void => {
 	enableAutocheck();
 	fillPuzzle();
@@ -60,7 +90,7 @@ const main = (): void => {
 			popupButton.click();
 		}
 
-		setTimeout(clearPuzzle, 1000);
+		setTimeout(clearPuzzle2, 1000);
 	}, 1000);
 };
 
