@@ -1,4 +1,7 @@
-import { tabEvent, deleteEvent, clickEvent, vowelCharCodes, createKeyboardEvent, returnToStart } from "./events";
+import { tabEvent, deleteEvent, clickEvent, createKeyboardEvent, returnToStart } from "./events";
+import { tilesInSundayAcross } from "./constants";
+
+const numOfCluesAcross = document.querySelector(".xwd__clue-list--list").querySelectorAll(".xwd__clue--li").length || 0;
 
 const enableAutocheck = (): void => {
 	const autocheckButton = Array.from(document.querySelectorAll("button.xwd__menu--btnlink")).find(
@@ -10,16 +13,16 @@ const enableAutocheck = (): void => {
 	}
 };
 
-const fillPuzzle = (): void => {
+const fillPuzzle = (charsToReveal: string[]): void => {
 	returnToStart();
-	for (let x = 0; x < 50; x++) {
-		for (let i = 0; i < 6; i++) {
-			for (let j = 0; j < 14; j++) {
+	for (let x = 0; x < numOfCluesAcross; x++) {
+		for (let i = 0; i < charsToReveal.length; i++) {
+			for (let j = 0; j < tilesInSundayAcross; j++) {
 				const highlightedCell = document.querySelector(".xwd__cell--highlighted");
 				if (highlightedCell) {
 					highlightedCell.dispatchEvent(
 						createKeyboardEvent("keypress", {
-							charCode: vowelCharCodes[i],
+							charCode: charsToReveal[i].charCodeAt(0),
 							bubbles: true,
 						})
 					);
@@ -33,10 +36,7 @@ const fillPuzzle = (): void => {
 const clearPuzzle = (): void => {
 	returnToStart();
 
-	const acrossClueListWrapper = document.querySelector(".xwd__clue-list--list");
-	const acrossCluesLength = acrossClueListWrapper.querySelectorAll(".xwd__clue--li").length;
-
-	for (let x = 0; x < acrossCluesLength; x++) {
+	for (let x = 0; x < numOfCluesAcross; x++) {
 		setTimeout(() => {
 			const currSelectedLetters = document.querySelectorAll(".xwd__cell--highlighted");
 			const lastElement = currSelectedLetters[currSelectedLetters.length - 1];
@@ -46,7 +46,7 @@ const clearPuzzle = (): void => {
 				lastElement.dispatchEvent(clickEvent);
 			}
 
-			for (let i = 0; i < 15; i++) {
+			for (let i = 0; i < tilesInSundayAcross; i++) {
 				lastElement?.dispatchEvent(deleteEvent);
 			}
 			document.activeElement?.dispatchEvent(tabEvent);
@@ -57,7 +57,7 @@ const clearPuzzle = (): void => {
 
 const main = (): void => {
 	enableAutocheck();
-	fillPuzzle();
+	fillPuzzle(["a", "b"]);
 
 	setTimeout(() => {
 		const popupButton = document.querySelector(".pz-moment__button");
