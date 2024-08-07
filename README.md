@@ -47,15 +47,21 @@ A Chrome extension that reveals certain letters on NYT crosswords!
    ```sh
    git checkout -b feature-branch
    ```
-3. Make your changes and commit them:
+3. Make your changes.
+4. Run the linter and code formatter:
+   ```sh
+   npm run lint:fix
+   npm run format
+   ```
+5. Make your changes and commit them:
    ```sh
    git commit -m "Description of changes"
    ```
-4. Push to the branch:
+6. Push to the branch:
    ```sh
    git push origin feature-branch
    ```
-5. Open a pull request.
+7. Open a pull request.
 
 ## License
 
