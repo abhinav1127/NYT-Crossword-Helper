@@ -30,3 +30,8 @@ export const clickEvent = createMouseEvent("click", {
 });
 
 export const vowelCharCodes = [97, 101, 105, 111, 117, 121];
+
+export const returnToStart = function () {
+	const firstClueAcross = document.querySelector(".xwd__clue--li");
+	(firstClueAcross as HTMLElement)?.click();
+};
