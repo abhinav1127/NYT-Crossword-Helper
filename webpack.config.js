@@ -2,8 +2,8 @@ const path = require("path");
 
 module.exports = {
 	entry: {
-		main: "./src/main.ts",
-		popup: "./src/popup.ts",
+		main: "./src/backend/main.ts",
+		popup: "./src/frontend/popup.ts",
 	},
 	module: {
 		rules: [
