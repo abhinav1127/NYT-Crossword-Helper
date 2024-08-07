@@ -52,7 +52,7 @@ const clearPuzzle = (): void => {
 			document.activeElement?.dispatchEvent(tabEvent);
 		}, 1);
 	}
-	returnToStart();
+	setTimeout(returnToStart, 50);
 };
 
 const main = (): void => {
@@ -65,7 +65,7 @@ const main = (): void => {
 			popupButton.click();
 		}
 
-		setTimeout(clearPuzzle, 1000);
+		setTimeout(clearPuzzle, 250);
 	}, 1000);
 };
 
