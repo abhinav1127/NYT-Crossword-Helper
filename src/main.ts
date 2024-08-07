@@ -32,7 +32,11 @@ const fillPuzzle = (): void => {
 
 const clearPuzzle = (): void => {
 	returnToStart();
-	for (let x = 0; x < 100; x++) {
+
+	const acrossClueListWrapper = document.querySelector(".xwd__clue-list--list");
+	const acrossCluesLength = acrossClueListWrapper.querySelectorAll(".xwd__clue--li").length;
+
+	for (let x = 0; x < acrossCluesLength; x++) {
 		setTimeout(() => {
 			const currSelectedLetters = document.querySelectorAll(".xwd__cell--highlighted");
 			const lastElement = currSelectedLetters[currSelectedLetters.length - 1];
@@ -48,6 +52,7 @@ const clearPuzzle = (): void => {
 			document.activeElement?.dispatchEvent(tabEvent);
 		}, 1);
 	}
+	returnToStart();
 };
 
 const main = (): void => {
