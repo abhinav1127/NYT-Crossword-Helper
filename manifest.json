@@ -1,0 +1,16 @@
+{
+	"manifest_version": 3,
+	"name": "NYT Crossword Helper",
+	"version": "1.0",
+	"description": "Reveals certain letters on NYT crossword",
+	"permissions": ["activeTab"],
+	"action": {
+		"default_popup": "dist/popup.html"
+	},
+	"content_scripts": [
+		{
+			"matches": ["https://www.nytimes.com/crosswords/game/*"],
+			"js": ["dist/main.js"]
+		}
+	]
+}
