@@ -1,7 +1,7 @@
 import { tabEvent, deleteEvent, clickEvent, createKeyboardEvent, returnToStart } from "./events";
 import { tilesInSundayAcross } from "./constants";
 
-const numOfCluesAcross = document.querySelector(".xwd__clue-list--list").querySelectorAll(".xwd__clue--li").length || 0;
+console.log("NYT Crossword Helper content script loaded");
 
 const enableAutocheck = (): void => {
 	const autocheckButton = Array.from(document.querySelectorAll("button.xwd__menu--btnlink")).find(
@@ -15,6 +15,9 @@ const enableAutocheck = (): void => {
 
 const fillPuzzle = (charsToReveal: string[]): void => {
 	returnToStart();
+	const numOfCluesAcross =
+		document.querySelector(".xwd__clue-list--list").querySelectorAll(".xwd__clue--li").length || 0;
+
 	for (let x = 0; x < numOfCluesAcross; x++) {
 		for (let i = 0; i < charsToReveal.length; i++) {
 			for (let j = 0; j < tilesInSundayAcross; j++) {
@@ -35,6 +38,8 @@ const fillPuzzle = (charsToReveal: string[]): void => {
 
 const clearPuzzle = (): void => {
 	returnToStart();
+	const numOfCluesAcross =
+		document.querySelector(".xwd__clue-list--list").querySelectorAll(".xwd__clue--li").length || 0;
 
 	for (let x = 0; x < numOfCluesAcross; x++) {
 		setTimeout(() => {
@@ -55,7 +60,14 @@ const clearPuzzle = (): void => {
 	setTimeout(returnToStart, 50);
 };
 
-const main = (): void => {
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+	if (message.action === "runCrosswordHelper") {
+		console.log(message);
+		runCrosswordHelper();
+	}
+});
+
+const runCrosswordHelper = (): void => {
 	enableAutocheck();
 	fillPuzzle(["a", "b"]);
 
@@ -68,5 +80,3 @@ const main = (): void => {
 		setTimeout(clearPuzzle, 250);
 	}, 1000);
 };
-
-main();
