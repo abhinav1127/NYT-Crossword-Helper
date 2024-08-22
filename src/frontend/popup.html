@@ -2,46 +2,54 @@
 <html>
 	<head>
 		<style>
-			.container {
-				padding: 20px;
+			body {
+				/* width: 300px; */
+				margin: 0;
+				padding: 15px;
 				font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+				font-size: 14px;
+				color: #333;
 			}
 			h1 {
 				font-size: 18px;
-				margin-bottom: 20px;
+				margin: 0 0 15px;
 				color: #2c3e50;
 			}
 			.toggle-container {
 				display: flex;
 				align-items: center;
-				margin-bottom: 20px;
+				margin-bottom: 15px;
 			}
 			.toggle-container label {
-				margin-left: 10px;
-				font-size: 14px;
+				margin-left: 8px;
+			}
+			.letter-input-wrapper {
+				margin-bottom: 15px;
+			}
+			.letter-input-wrapper label {
+				display: block;
+				margin-bottom: 5px;
 			}
 			.letter-input-container {
 				display: flex;
-				gap: 5px;
-				margin-bottom: 20px;
+				gap: 4px;
+				background-color: #f5f5f5;
+				padding: 8px;
+				border-radius: 4px;
 			}
 			.letter-input {
-				width: 30px;
-				height: 30px;
+				width: 28px;
+				height: 28px;
 				text-align: center;
 				text-transform: uppercase;
 				font-size: 16px;
 				border: 1px solid #ccc;
-				border-radius: 4px;
+				border-radius: 3px;
 			}
 			.letter-input:focus {
 				outline: none;
 				border-color: #3498db;
 				box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.3);
-			}
-			.letter-input-wrapper {
-				cursor: pointer;
-				padding: 10px;
 			}
 			button {
 				width: 100%;
@@ -52,7 +60,7 @@
 				border-radius: 4px;
 				cursor: pointer;
 				font-size: 16px;
-				transition: background-color 0.3s;
+				transition: background-color 0.2s;
 			}
 			button:hover {
 				background-color: #2980b9;
@@ -60,27 +68,25 @@
 		</style>
 	</head>
 	<body>
-		<div class="container">
-			<h1>NYT Letter Revealer</h1>
-			<div class="toggle-container">
-				<input type="checkbox" id="autocheck-toggle" />
-				<label for="autocheck-toggle">Leave Autocheck On</label>
-			</div>
-			<div class="letter-input-wrapper" id="letter-input-wrapper">
-				<label for="letter-inputs">Letters to Reveal:</label>
-				<div id="letter-inputs" class="letter-input-container">
-					<input type="text" class="letter-input" maxlength="1" />
-					<input type="text" class="letter-input" maxlength="1" />
-					<input type="text" class="letter-input" maxlength="1" />
-					<input type="text" class="letter-input" maxlength="1" />
-					<input type="text" class="letter-input" maxlength="1" />
-					<input type="text" class="letter-input" maxlength="1" />
-					<input type="text" class="letter-input" maxlength="1" />
-					<input type="text" class="letter-input" maxlength="1" />
-				</div>
-			</div>
-			<button id="reveal-button">Reveal</button>
+		<h1>NYT Letter Revealer</h1>
+		<div class="toggle-container">
+			<input type="checkbox" id="autocheck-toggle" />
+			<label for="autocheck-toggle">Leave Autocheck On</label>
 		</div>
+		<div class="letter-input-wrapper" id="letter-input-wrapper">
+			<label for="letter-inputs">Letters to Reveal:</label>
+			<div id="letter-inputs" class="letter-input-container">
+				<input type="text" class="letter-input" maxlength="1" />
+				<input type="text" class="letter-input" maxlength="1" />
+				<input type="text" class="letter-input" maxlength="1" />
+				<input type="text" class="letter-input" maxlength="1" />
+				<input type="text" class="letter-input" maxlength="1" />
+				<input type="text" class="letter-input" maxlength="1" />
+				<input type="text" class="letter-input" maxlength="1" />
+				<input type="text" class="letter-input" maxlength="1" />
+			</div>
+		</div>
+		<button id="reveal-button">Reveal</button>
 		<script src="popup.js"></script>
 	</body>
 </html>
