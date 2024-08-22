@@ -4,34 +4,43 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>NYT Letter Revealer</title>
+		<link
+			href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Source+Sans+Pro&display=swap"
+			rel="stylesheet"
+		/>
 		<style>
 			body {
 				/* width: 300px; */
 				margin: 0;
-				padding: 20px;
-				font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-				font-size: 14px;
+				padding: 25px;
+				font-family: "Source Sans Pro", sans-serif;
+				font-size: 16px;
+				line-height: 1.5;
 				color: #333;
+				background-color: #f8f8f8;
 			}
 			h1 {
-				font-size: 22px;
-				margin: 0 0 20px;
-				color: #2c3e50;
+				font-family: "Playfair Display", serif;
+				font-size: 24px;
+				text-align: center;
+				margin: 0 0 25px;
+				color: #121212;
 			}
 			.section {
-				margin-bottom: 20px;
-				padding-bottom: 20px;
+				margin-bottom: 25px;
+				padding-bottom: 25px;
 				border-bottom: 1px solid #e0e0e0;
 			}
 			.toggle-container {
 				display: flex;
 				align-items: center;
+				justify-content: center;
 			}
 			.toggle-switch {
 				position: relative;
 				display: inline-block;
-				width: 50px;
-				height: 24px;
+				width: 40px;
+				height: 20px;
 			}
 			.toggle-switch input {
 				opacity: 0;
@@ -46,80 +55,81 @@
 				right: 0;
 				bottom: 0;
 				background-color: #ccc;
-				transition: 0.4s;
-				border-radius: 34px;
+				transition: 0.3s;
+				border-radius: 20px;
 			}
 			.slider:before {
 				position: absolute;
 				content: "";
-				height: 20px;
-				width: 20px;
+				height: 16px;
+				width: 16px;
 				left: 2px;
 				bottom: 2px;
 				background-color: white;
-				transition: 0.4s;
+				transition: 0.3s;
 				border-radius: 50%;
 			}
 			input:checked + .slider {
-				background-color: #3498db;
+				background-color: #567b95;
 			}
 			input:checked + .slider:before {
-				transform: translateX(26px);
+				transform: translateX(20px);
 			}
 			.toggle-container label {
-				margin-left: 10px;
+				margin-right: 10px;
+				font-size: 14px;
 			}
 			.letter-input-wrapper {
-				border: 1px solid #e0e0e0;
-				border-radius: 6px;
-				padding: 15px;
+				background-color: #e9ecef;
+				border-radius: 8px;
+				padding: 20px;
 			}
-			.letter-input-label {
+			.letter-input-wrapper label {
 				display: block;
-				margin-bottom: 10px;
+				margin-bottom: 15px;
 				font-weight: bold;
 			}
 			.letter-input-container {
 				display: flex;
-				gap: 6px;
+				gap: 8px;
+				position: relative;
 			}
 			.letter-input {
-				width: 30px;
-				height: 30px;
+				width: 36px;
+				height: 36px;
 				text-align: center;
 				text-transform: uppercase;
-				font-size: 16px;
-				border: 1px solid #ccc;
+				font-size: 18px;
+				border: 1px solid #ced4da;
 				border-radius: 4px;
 				transition: all 0.3s ease;
 			}
 			.letter-input:focus {
 				outline: none;
-				border-color: #3498db;
-				box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.3);
+				border-color: #567b95;
+				box-shadow: 0 0 0 2px rgba(86, 123, 149, 0.3);
 			}
 			.letter-input::placeholder {
-				color: #bbb;
+				color: #adb5bd;
 			}
 			button {
 				width: 100%;
 				padding: 12px;
-				background-color: #3498db;
-				color: white;
-				border: none;
+				background-color: transparent;
+				color: #567b95;
+				border: 2px solid #567b95;
 				border-radius: 6px;
 				cursor: pointer;
 				font-size: 16px;
 				font-weight: bold;
-				transition:
-					background-color 0.2s,
-					transform 0.1s;
+				transition: all 0.2s;
 				display: flex;
 				align-items: center;
 				justify-content: center;
 			}
 			button:hover {
-				background-color: #2980b9;
+				background-color: #567b95;
+				color: white;
 			}
 			button:active {
 				transform: scale(0.98);
@@ -133,41 +143,33 @@
 				border-radius: 4px;
 				display: none;
 			}
-			#feedback.success {
-				background-color: #d4edda;
-				color: #155724;
-			}
-			#feedback.error {
-				background-color: #f8d7da;
-				color: #721c24;
-			}
 		</style>
 	</head>
 	<body>
 		<h1>NYT Letter Revealer</h1>
 		<div class="section">
+			<div class="letter-input-wrapper" id="letter-input-wrapper">
+				<label for="letter-inputs">Letters to Reveal:</label>
+				<div id="letter-inputs" class="letter-input-container">
+					<input type="text" class="letter-input" maxlength="1" />
+					<input type="text" class="letter-input" maxlength="1" />
+					<input type="text" class="letter-input" maxlength="1" />
+					<input type="text" class="letter-input" maxlength="1" />
+					<input type="text" class="letter-input" maxlength="1" />
+					<input type="text" class="letter-input" maxlength="1" />
+					<input type="text" class="letter-input" maxlength="1" />
+					<input type="text" class="letter-input" maxlength="1" />
+				</div>
+			</div>
+		</div>
+		<div class="section">
 			<div class="toggle-container">
+				<label for="autocheck-toggle">Leave Autocheck On</label>
 				<label class="toggle-switch">
 					<input type="checkbox" id="autocheck-toggle" />
 					<span class="slider"></span>
 				</label>
-				<label for="autocheck-toggle">Leave Autocheck On</label>
 			</div>
-		</div>
-		<div class="section">
-			<!-- <div class="letter-input-wrapper" id="letter-input-wrapper"> -->
-			<label for="letter-inputs id="letter-input-label"">Letters to Reveal:</label>
-			<div id="letter-inputs" class="letter-input-container">
-				<input type="text" class="letter-input" maxlength="1"/>
-				<input type="text" class="letter-input" maxlength="1"/>
-				<input type="text" class="letter-input" maxlength="1"/>
-				<input type="text" class="letter-input" maxlength="1"/>
-				<input type="text" class="letter-input" maxlength="1"/>
-				<input type="text" class="letter-input" maxlength="1"/>
-				<input type="text" class="letter-input" maxlength="1"/>
-				<input type="text" class="letter-input" maxlength="1"/>
-			</div>
-			<!-- </div> -->
 		</div>
 		<button id="reveal-button">
 			<svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
