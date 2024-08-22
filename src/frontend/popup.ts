@@ -55,7 +55,13 @@ function handleKeydown(e: KeyboardEvent, index: number) {
 	const input = e.target as HTMLInputElement;
 	if (e.key === "Backspace" && input.value === "") {
 		e.preventDefault();
-		focusPreviousInput(index);
+		focusPreviousInput(index, true);
+	} else if (e.key === "ArrowLeft") {
+		e.preventDefault();
+		focusPreviousInput(index, false);
+	} else if (e.key === "ArrowRight") {
+		e.preventDefault();
+		focusNextInput(index);
 	} else if (/^[a-zA-Z]$/.test(e.key)) {
 		e.preventDefault();
 		input.value = e.key.toUpperCase();
@@ -68,12 +74,14 @@ function focusNextInput(currentIndex: number) {
 	nextInput?.focus();
 }
 
-function focusPreviousInput(currentIndex: number) {
+function focusPreviousInput(currentIndex: number, erase: boolean) {
 	if (currentIndex > 0) {
 		const prevInput = document.querySelector<HTMLInputElement>(`.letter-input:nth-child(${currentIndex})`);
 		if (prevInput) {
-			prevInput.value = "";
 			prevInput.focus();
+			if (erase) {
+				prevInput.value = "";
+			}
 		}
 	}
 }
