@@ -62,8 +62,13 @@ const clearPuzzle = (): void => {
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 	if (message.action === "runCrosswordHelper") {
-		console.log(message);
-		runCrosswordHelper();
+		try {
+			runCrosswordHelper();
+			sendResponse({ success: true });
+		} catch (error) {
+			console.error("Error in runCrosswordHelper:", error);
+			sendResponse({ success: false });
+		}
 	}
 });
 
