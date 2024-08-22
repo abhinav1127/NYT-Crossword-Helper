@@ -14,6 +14,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		input.addEventListener("keydown", (e) => handleKeydown(e, index));
 	});
 
+	// TODO: implement failure
 	revealButton.addEventListener("click", handleReveal);
 });
 
@@ -61,6 +62,8 @@ function handleReveal() {
 	const autocheckOn = (document.getElementById("autocheck-toggle") as HTMLInputElement).checked;
 
 	sendMessageToActiveTab({ action: "runCrosswordHelper", letters: letters, autocheck: autocheckOn });
+
+	showFeedback("Letters revealed successfully!", true);
 }
 
 function sendMessageToActiveTab(message: any) {
@@ -77,4 +80,16 @@ function sendMessageToActiveTab(message: any) {
 			// Optionally, display an error message to the user
 		}
 	});
+}
+
+function showFeedback(message: string, isSuccess: boolean) {
+	const feedback = document.getElementById("feedback");
+	if (feedback) {
+		feedback.textContent = message;
+		feedback.className = isSuccess ? "success" : "error";
+		feedback.style.display = "block";
+		setTimeout(() => {
+			feedback.style.display = "none";
+		}, 3000);
+	}
 }
