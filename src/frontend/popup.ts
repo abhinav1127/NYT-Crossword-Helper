@@ -9,9 +9,17 @@ document.addEventListener("DOMContentLoaded", function () {
 		sendMessageToActiveTab({ action: "toggleAutocheck", autocheck: checkbox.checked });
 	});
 
+	// TODO: Focus on last letter of saved input
+	letterInputs[0].focus();
 	letterInputs.forEach((input, index) => {
 		input.addEventListener("input", (e) => handleInput(e, index));
 		input.addEventListener("keydown", (e) => handleKeydown(e, index));
+		input.addEventListener("beforeinput", (e) => {
+			const inputChar = e.data;
+			if (inputChar && !/^[a-zA-Z]$/.test(inputChar)) {
+				e.preventDefault();
+			}
+		});
 	});
 
 	// TODO: implement failure
