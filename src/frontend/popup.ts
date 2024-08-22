@@ -20,6 +20,14 @@ document.addEventListener("DOMContentLoaded", function () {
 				e.preventDefault();
 			}
 		});
+		input.addEventListener("focus", (e) => {
+			const input = e.target as HTMLInputElement;
+			input.select(); // Select all text when focused
+		});
+		input.addEventListener("click", (e) => {
+			const input = e.target as HTMLInputElement;
+			input.select(); // Select all text when clicked
+		});
 	});
 
 	// TODO: implement failure
