@@ -103,12 +103,17 @@
 				border: 1px solid #ced4da;
 				border-radius: 4px;
 				transition: all 0.3s ease;
+				caret-color: transparent; /* Hide the blinking cursor */
 			}
 			.letter-input:focus {
 				outline: none;
 				border-color: #567b95;
 				box-shadow: 0 0 0 2px rgba(86, 123, 149, 0.3);
 				transform: scale(1.05);
+			}
+			.letter-input:focus::selection {
+				background-color: #567b95;
+				color: white;
 			}
 			button {
 				width: 100%;
