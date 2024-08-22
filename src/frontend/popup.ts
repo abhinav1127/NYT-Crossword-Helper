@@ -46,13 +46,20 @@ function handleWrapperClick(e: MouseEvent) {
 function handleInput(e: Event, index: number) {
 	const input = e.target as HTMLInputElement;
 	if (input.value) {
+		input.value = input.value.slice(-1).toUpperCase(); // Keep only the last entered character
 		focusNextInput(index);
 	}
 }
 
 function handleKeydown(e: KeyboardEvent, index: number) {
-	if (e.key === "Backspace" && (e.target as HTMLInputElement).value === "") {
+	const input = e.target as HTMLInputElement;
+	if (e.key === "Backspace" && input.value === "") {
+		e.preventDefault();
 		focusPreviousInput(index);
+	} else if (/^[a-zA-Z]$/.test(e.key)) {
+		e.preventDefault();
+		input.value = e.key.toUpperCase();
+		focusNextInput(index);
 	}
 }
 
