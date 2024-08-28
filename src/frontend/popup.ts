@@ -99,6 +99,8 @@ async function handleReveal() {
 		.map((input) => input.value);
 	const autocheckOn = (document.getElementById("autocheck-toggle") as HTMLInputElement).checked;
 
+	showFeedback("Working magic...", "working");
+
 	try {
 		const response = await sendMessageToActiveTab({
 			action: "runCrosswordHelper",
@@ -106,13 +108,13 @@ async function handleReveal() {
 			autocheck: autocheckOn,
 		});
 		if (response && response.success) {
-			showFeedback("Letters revealed successfully!", true);
+			showFeedback("Letters revealed successfully!", "success");
 		} else {
-			showFeedback("Failed to reveal letters. Please try again.", false);
+			showFeedback("Failed to reveal letters. Please try again.", "error");
 		}
 	} catch (error) {
 		console.error(error);
-		showFeedback(`An error occurred: ${error instanceof Error ? error.message : JSON.stringify(error)}`, false);
+		showFeedback(`An error occurred: ${error instanceof Error ? error.message : JSON.stringify(error)}`, "error");
 	}
 }
 
@@ -135,14 +137,34 @@ function sendMessageToActiveTab(message: any): Promise<any> {
 	});
 }
 
-function showFeedback(message: string, isSuccess: boolean) {
+function showFeedback(message: string, state: "working" | "success" | "error") {
 	const feedback = document.getElementById("feedback");
 	if (feedback) {
-		feedback.textContent = message;
-		feedback.className = isSuccess ? "success" : "error";
+		let emoji = "";
+		switch (state) {
+			case "working":
+				emoji = "🪄";
+				message = "Working magic"; // Remove dots from the message
+				break;
+			case "success":
+				emoji = "✅";
+				break;
+			case "error":
+				emoji = "❌";
+				break;
+		}
+
+		feedback.innerHTML = `<span class="emoji">${emoji}</span> ${message}`;
+		if (state === "working") {
+			feedback.innerHTML += '<span class="dots"><span>.</span><span>.</span><span>.</span></span>';
+		}
+		feedback.className = state;
 		feedback.style.display = "block";
-		setTimeout(() => {
-			feedback.style.display = "none";
-		}, 3000);
+
+		if (state !== "working") {
+			setTimeout(() => {
+				feedback.style.display = "none";
+			}, 3000);
+		}
 	}
 }

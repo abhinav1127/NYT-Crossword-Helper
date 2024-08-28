@@ -149,14 +149,64 @@
 				padding: 10px;
 				border-radius: 4px;
 				display: none;
+				text-align: center;
 			}
+
 			#feedback.success {
 				background-color: #d4edda;
 				color: #155724;
 			}
+
 			#feedback.error {
 				background-color: #f8d7da;
 				color: #721c24;
+			}
+
+			#feedback.working {
+				background-color: #fff3cd;
+				color: #856404;
+			}
+
+			#feedback .emoji {
+				display: inline-block;
+				margin-right: 5px;
+				font-size: 1.2em;
+			}
+
+			#feedback.working .emoji {
+				animation: wandWiggle 1s infinite alternate;
+			}
+
+			#feedback .dots span {
+				opacity: 0;
+				animation: dotFade 1.5s infinite;
+			}
+
+			#feedback .dots span:nth-child(2) {
+				animation-delay: 0.5s;
+			}
+
+			#feedback .dots span:nth-child(3) {
+				animation-delay: 1s;
+			}
+
+			@keyframes wandWiggle {
+				0% {
+					transform: translateX(-2px) rotate(-5deg);
+				}
+				100% {
+					transform: translateX(2px) rotate(5deg);
+				}
+			}
+
+			@keyframes dotFade {
+				0%,
+				100% {
+					opacity: 0;
+				}
+				50% {
+					opacity: 1;
+				}
 			}
 		</style>
 	</head>
