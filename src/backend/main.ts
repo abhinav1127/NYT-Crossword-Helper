@@ -80,15 +80,19 @@ const runCrosswordHelper = async (letters: string[]): Promise<void> => {
 	fillPuzzle(letters);
 
 	// wait for popup button to arrive
-	await new Promise((resolve) => setTimeout(resolve, 1000));
+	await new Promise((resolve) => requestAnimationFrame(resolve));
 
 	const popupButton = document.querySelector(".pz-moment__button:not(.secondary)");
 	if (popupButton instanceof HTMLElement) {
 		popupButton.click();
 	}
 
-	// wait for popup button to disappear
-	await new Promise((resolve) => setTimeout(resolve, 250));
+	// wait for popup button to disappear and animation to end, not exactly sure why we need multiple
+	// if this does not work well, I would go back to a timeout: await new Promise((resolve) => setTimeout(resolve, 250));
+	await new Promise((resolve) => requestAnimationFrame(resolve));
+	await new Promise((resolve) => requestAnimationFrame(resolve));
+	await new Promise((resolve) => requestAnimationFrame(resolve));
+	await new Promise((resolve) => requestAnimationFrame(resolve));
 
 	await clearPuzzle();
 };
