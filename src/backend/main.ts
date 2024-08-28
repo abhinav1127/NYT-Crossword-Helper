@@ -60,10 +60,10 @@ const clearPuzzle = (): void => {
 	setTimeout(returnToStart, 50);
 };
 
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
 	if (message.action === "runCrosswordHelper") {
 		try {
-			runCrosswordHelper(message.letters);
+			await runCrosswordHelper(message.letters);
 			sendResponse({ success: true });
 		} catch (error) {
 			console.error("Error in runCrosswordHelper:", error);
@@ -72,7 +72,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 	}
 });
 
-const runCrosswordHelper = (letters: string[]): void => {
+const runCrosswordHelper = async (letters: string[]): Promise<void> => {
 	enableAutocheck();
 	fillPuzzle(letters);
 

@@ -86,13 +86,13 @@ function focusPreviousInput(currentIndex: number, erase: boolean) {
 	}
 }
 
-function handleReveal() {
+async function handleReveal() {
 	const letters = Array.from(document.querySelectorAll<HTMLInputElement>(".letter-input"))
 		.filter((input) => input.value)
 		.map((input) => input.value);
 	const autocheckOn = (document.getElementById("autocheck-toggle") as HTMLInputElement).checked;
 
-	sendMessageToActiveTab({ action: "runCrosswordHelper", letters: letters, autocheck: autocheckOn });
+	await sendMessageToActiveTab({ action: "runCrosswordHelper", letters: letters, autocheck: autocheckOn });
 
 	showFeedback("Letters revealed successfully!", true);
 }
