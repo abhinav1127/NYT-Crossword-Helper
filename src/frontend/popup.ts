@@ -99,6 +99,11 @@ async function handleReveal() {
 		.map((input) => input.value);
 	const autocheckOn = (document.getElementById("autocheck-toggle") as HTMLInputElement).checked;
 
+	if (letters.length == 0) {
+		showFeedback("Letters to reveal must not be empty.", "error");
+		return;
+	}
+
 	showFeedback("Working magic...", "working");
 
 	try {
