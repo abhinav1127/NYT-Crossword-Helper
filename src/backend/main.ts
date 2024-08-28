@@ -36,28 +36,29 @@ const fillPuzzle = (charsToReveal: string[]): void => {
 	}
 };
 
-const clearPuzzle = (): void => {
+const clearPuzzle = async (): Promise<void> => {
 	returnToStart();
+	await new Promise((resolve) => requestAnimationFrame(resolve));
+
 	const numOfCluesAcross =
 		document.querySelector(".xwd__clue-list--list").querySelectorAll(".xwd__clue--li").length || 0;
 
 	for (let x = 0; x < numOfCluesAcross; x++) {
-		setTimeout(() => {
-			const currSelectedLetters = document.querySelectorAll(".xwd__cell--highlighted");
-			const lastElement = currSelectedLetters[currSelectedLetters.length - 1];
-			const selectedCell = document.querySelector(".xwd__cell--selected");
+		const currSelectedLetters = document.querySelectorAll(".xwd__cell--highlighted");
+		const lastElement = currSelectedLetters[currSelectedLetters.length - 1];
+		const selectedCell = document.querySelector(".xwd__cell--selected");
 
-			if (lastElement && selectedCell && lastElement.id !== selectedCell.id) {
-				lastElement.dispatchEvent(clickEvent);
-			}
+		if (lastElement && selectedCell && lastElement.id !== selectedCell.id) {
+			lastElement.dispatchEvent(clickEvent);
+		}
 
-			for (let i = 0; i < tilesInSundayAcross; i++) {
-				lastElement?.dispatchEvent(deleteEvent);
-			}
-			document.activeElement?.dispatchEvent(tabEvent);
-		}, 1);
+		for (let i = 0; i < tilesInSundayAcross; i++) {
+			lastElement?.dispatchEvent(deleteEvent);
+		}
+		document.activeElement?.dispatchEvent(tabEvent);
+		await new Promise((resolve) => requestAnimationFrame(resolve));
 	}
-	setTimeout(returnToStart, 50);
+	returnToStart();
 };
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
@@ -89,5 +90,5 @@ const runCrosswordHelper = async (letters: string[]): Promise<void> => {
 	// wait for popup button to disappear
 	await new Promise((resolve) => setTimeout(resolve, 250));
 
-	clearPuzzle();
+	await clearPuzzle();
 };
