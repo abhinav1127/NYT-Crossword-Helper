@@ -28,6 +28,13 @@ document.addEventListener("DOMContentLoaded", function () {
 			const input = e.target as HTMLInputElement;
 			input.select(); // Select all text when clicked
 		});
+		input.addEventListener("keydown", (e) => {
+			handleKeydown(e, index);
+			if (e.key === "Enter") {
+				e.preventDefault();
+				handleReveal();
+			}
+		});
 	});
 
 	// TODO: implement failure
