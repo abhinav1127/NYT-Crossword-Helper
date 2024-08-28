@@ -1,14 +1,18 @@
 import { tabEvent, deleteEvent, clickEvent, createKeyboardEvent, returnToStart } from "./events";
 import { tilesInSundayAcross } from "./constants";
 
-console.log("NYT Crossword Helper content script loaded");
-
-const enableAutocheck = (): void => {
+const setAutocheckState = (enable: boolean): void => {
 	const autocheckButton = Array.from(document.querySelectorAll("button.xwd__menu--btnlink")).find(
 		(button) => button.textContent?.trim() === "Autocheck"
 	);
+	if (!autocheckButton) {
+		throw new Error("Cannot find autocheck button");
+	}
 
-	if (autocheckButton && !autocheckButton.parentElement?.classList.contains("xwd__menu--item-checked")) {
+	if (
+		(enable && !autocheckButton.parentElement?.classList.contains("xwd__menu--item-checked")) ||
+		(!enable && autocheckButton.parentElement?.classList.contains("xwd__menu--item-checked"))
+	) {
 		(autocheckButton as HTMLElement)?.click();
 	}
 };
@@ -81,7 +85,7 @@ const closePopup = async (animationFrames: number): Promise<void> => {
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 	if (message.action === "runCrosswordHelper") {
-		runCrosswordHelper(message.letters)
+		runCrosswordHelper(message.letters, message.autocheck)
 			.then(() => {
 				sendResponse({ success: true });
 			})
@@ -93,9 +97,9 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 	// Handle other message types if needed
 });
 
-const runCrosswordHelper = async (letters: string[]): Promise<void> => {
+const runCrosswordHelper = async (letters: string[], leaveAutocheckOn: boolean): Promise<void> => {
 	await closePopup(30);
-	enableAutocheck();
+	setAutocheckState(true);
 	await closePopup(10);
 
 	fillPuzzle(letters);
@@ -111,4 +115,8 @@ const runCrosswordHelper = async (letters: string[]): Promise<void> => {
 	await closePopup(4);
 
 	await clearPuzzle();
+
+	if (!leaveAutocheckOn) {
+		setAutocheckState(false);
+	}
 };
