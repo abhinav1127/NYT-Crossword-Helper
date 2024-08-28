@@ -61,6 +61,24 @@ const clearPuzzle = async (): Promise<void> => {
 	returnToStart();
 };
 
+const closePopup = async (animationFrames: number): Promise<void> => {
+	// wait for popup button to arrive
+	await new Promise((resolve) => requestAnimationFrame(resolve));
+
+	const popupButton = document.querySelector(".pz-moment__button:not(.secondary)");
+	if (popupButton instanceof HTMLElement) {
+		popupButton.click();
+	} else {
+		return;
+	}
+
+	// wait for popup button to disappear and animation to end, not exactly sure why we need multiple
+	// if this does not work well, I would go back to a timeout: await new Promise((resolve) => setTimeout(resolve, 250));
+	for (let i = 0; i < animationFrames; i++) {
+		await new Promise((resolve) => requestAnimationFrame(resolve));
+	}
+};
+
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 	if (message.action === "runCrosswordHelper") {
 		runCrosswordHelper(message.letters)
@@ -76,7 +94,10 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 });
 
 const runCrosswordHelper = async (letters: string[]): Promise<void> => {
+	await closePopup(30);
 	enableAutocheck();
+	await closePopup(10);
+
 	fillPuzzle(letters);
 
 	// wait for popup button to arrive
@@ -87,12 +108,7 @@ const runCrosswordHelper = async (letters: string[]): Promise<void> => {
 		popupButton.click();
 	}
 
-	// wait for popup button to disappear and animation to end, not exactly sure why we need multiple
-	// if this does not work well, I would go back to a timeout: await new Promise((resolve) => setTimeout(resolve, 250));
-	await new Promise((resolve) => requestAnimationFrame(resolve));
-	await new Promise((resolve) => requestAnimationFrame(resolve));
-	await new Promise((resolve) => requestAnimationFrame(resolve));
-	await new Promise((resolve) => requestAnimationFrame(resolve));
+	await closePopup(4);
 
 	await clearPuzzle();
 };
