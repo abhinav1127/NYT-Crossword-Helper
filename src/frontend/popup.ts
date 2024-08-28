@@ -99,24 +99,39 @@ async function handleReveal() {
 		.map((input) => input.value);
 	const autocheckOn = (document.getElementById("autocheck-toggle") as HTMLInputElement).checked;
 
-	await sendMessageToActiveTab({ action: "runCrosswordHelper", letters: letters, autocheck: autocheckOn });
-
-	showFeedback("Letters revealed successfully!", true);
+	try {
+		const response = await sendMessageToActiveTab({
+			action: "runCrosswordHelper",
+			letters: letters,
+			autocheck: autocheckOn,
+		});
+		if (response && response.success) {
+			showFeedback("Letters revealed successfully!", true);
+		} else {
+			showFeedback("Failed to reveal letters. Please try again.", false);
+		}
+	} catch (error) {
+		console.error(error);
+		showFeedback(`An error occurred: ${error instanceof Error ? error.message : JSON.stringify(error)}`, false);
+	}
 }
 
-function sendMessageToActiveTab(message: any) {
-	chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-		if (tabs[0]?.id) {
-			chrome.tabs.sendMessage(tabs[0].id, message, function (response) {
+function sendMessageToActiveTab(message: any): Promise<any> {
+	return new Promise((resolve, reject) => {
+		chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+			const tab = tabs[0];
+			if (!tab?.id || !tab.url?.startsWith("https://www.nytimes.com/crosswords/game")) {
+				reject(new Error("Not on NYT Crossword page"));
+				return;
+			}
+			chrome.tabs.sendMessage(tab.id, message, function (response) {
 				if (chrome.runtime.lastError) {
-					console.error("Error sending message:", chrome.runtime.lastError.message);
-					// Optionally, display an error message to the user
+					reject(chrome.runtime.lastError);
+				} else {
+					resolve(response);
 				}
 			});
-		} else {
-			console.error("No active tab found");
-			// Optionally, display an error message to the user
-		}
+		});
 	});
 }
 
