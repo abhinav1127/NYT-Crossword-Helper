@@ -76,12 +76,14 @@ const runCrosswordHelper = async (letters: string[]): Promise<void> => {
 	enableAutocheck();
 	fillPuzzle(letters);
 
-	setTimeout(() => {
-		const popupButton = document.querySelector(".pz-moment__button");
-		if (popupButton instanceof HTMLElement) {
-			popupButton.click();
-		}
+	await new Promise((resolve) => setTimeout(resolve, 1000));
 
-		setTimeout(clearPuzzle, 250);
-	}, 1000);
+	const popupButton = document.querySelector(".pz-moment__button:not(.secondary)");
+	if (popupButton instanceof HTMLElement) {
+		popupButton.click();
+	}
+
+	await new Promise((resolve) => setTimeout(resolve, 250));
+
+	clearPuzzle();
 };
