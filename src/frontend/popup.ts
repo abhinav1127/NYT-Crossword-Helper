@@ -88,8 +88,8 @@ function focusPreviousInput(currentIndex: number, erase: boolean) {
 
 function handleReveal() {
 	const letters = Array.from(document.querySelectorAll<HTMLInputElement>(".letter-input"))
-		.map((input) => input.value.toUpperCase())
-		.join("");
+		.filter((input) => input.value)
+		.map((input) => input.value);
 	const autocheckOn = (document.getElementById("autocheck-toggle") as HTMLInputElement).checked;
 
 	sendMessageToActiveTab({ action: "runCrosswordHelper", letters: letters, autocheck: autocheckOn });
