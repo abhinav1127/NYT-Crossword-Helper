@@ -5,7 +5,8 @@
 	"description": "Reveals certain letters on NYT crossword",
 	"permissions": ["activeTab"],
 	"action": {
-		"default_popup": "dist/popup.html"
+		"default_popup": "dist/popup.html",
+		"default_icon": "dist/icon128.png"
 	},
 	"content_scripts": [
 		{
