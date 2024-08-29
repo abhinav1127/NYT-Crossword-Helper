@@ -5,14 +5,19 @@ document.addEventListener("DOMContentLoaded", function () {
 	const wrapper = document.getElementById("letter-input-wrapper");
 	wrapper?.addEventListener("click", handleWrapperClick);
 
+	// Load saved state
+	loadSavedState();
+
 	checkbox.addEventListener("change", function () {
 		sendMessageToActiveTab({ action: "toggleAutocheck", autocheck: checkbox.checked });
+		saveState();
 	});
 
-	// TODO: Focus on last letter of saved input
-	letterInputs[0].focus();
 	letterInputs.forEach((input, index) => {
-		input.addEventListener("input", (e) => handleInput(e, index));
+		input.addEventListener("input", (e) => {
+			handleInput(e, index);
+			saveState();
+		});
 		input.addEventListener("keydown", (e) => handleKeydown(e, index));
 		input.addEventListener("beforeinput", (e) => {
 			const inputChar = e.data;
@@ -37,7 +42,6 @@ document.addEventListener("DOMContentLoaded", function () {
 		});
 	});
 
-	// TODO: implement failure
 	revealButton.addEventListener("click", handleReveal);
 });
 
@@ -74,6 +78,7 @@ function handleKeydown(e: KeyboardEvent, index: number) {
 		input.value = e.key.toUpperCase();
 		focusNextInput(index);
 	}
+	saveState();
 }
 
 function focusNextInput(currentIndex: number) {
@@ -171,5 +176,53 @@ function showFeedback(message: string, state: "working" | "success" | "error") {
 				feedback.style.display = "none";
 			}, 3000);
 		}
+	}
+}
+
+function saveState() {
+	const letterInputs = document.querySelectorAll<HTMLInputElement>(".letter-input");
+	const letters = Array.from(letterInputs).map((input) => input.value);
+	const autocheckOn = (document.getElementById("autocheck-toggle") as HTMLInputElement).checked;
+
+	if (chrome.storage && chrome.storage.local) {
+		chrome.storage.local.set({ letters, autocheckOn }, function () {
+			if (chrome.runtime.lastError) {
+				console.error("Error saving state:", chrome.runtime.lastError);
+			}
+		});
+	} else {
+		console.error("Chrome storage API is not available");
+	}
+}
+
+function loadSavedState() {
+	if (chrome.storage && chrome.storage.local) {
+		chrome.storage.local.get(["letters", "autocheckOn"], function (result) {
+			if (chrome.runtime.lastError) {
+				console.error("Error loading state:", chrome.runtime.lastError);
+				return;
+			}
+
+			const letterInputs = document.querySelectorAll<HTMLInputElement>(".letter-input");
+			const checkbox = document.getElementById("autocheck-toggle") as HTMLInputElement;
+
+			if (result.letters) {
+				result.letters.forEach((letter: string, index: number) => {
+					if (letterInputs[index]) {
+						letterInputs[index].value = letter;
+					}
+				});
+			}
+
+			if (result.autocheckOn !== undefined) {
+				checkbox.checked = result.autocheckOn;
+			}
+
+			// Focus on the first empty input
+			const firstEmptyInput = Array.from(letterInputs).find((input) => !input.value);
+			firstEmptyInput?.focus();
+		});
+	} else {
+		console.error("Chrome storage API is not available");
 	}
 }
