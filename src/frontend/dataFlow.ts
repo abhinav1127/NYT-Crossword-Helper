@@ -1,8 +1,10 @@
+import { SELECTORS, STORAGE_KEYS, NYT_CROSSWORD_URL } from "./constants";
+
 export function sendMessageToActiveTab(message: any): Promise<any> {
 	return new Promise((resolve, reject) => {
 		chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
 			const tab = tabs[0];
-			if (!tab?.id || !tab.url?.startsWith("https://www.nytimes.com/crosswords/game")) {
+			if (!tab?.id || !tab.url?.startsWith(NYT_CROSSWORD_URL)) {
 				reject(new Error("Not on NYT Crossword page"));
 				return;
 			}
@@ -18,16 +20,20 @@ export function sendMessageToActiveTab(message: any): Promise<any> {
 }
 
 export function saveState() {
-	const letterInputs = document.querySelectorAll<HTMLInputElement>(".letter-input");
+	const letterInputs = document.querySelectorAll<HTMLInputElement>(SELECTORS.LETTER_INPUT);
 	const letters = Array.from(letterInputs).map((input) => input.value);
-	const autocheckOn = (document.getElementById("autocheck-toggle") as HTMLInputElement).checked;
+	const autocheckOn = (document.getElementById(SELECTORS.AUTOCHECK_TOGGLE) as HTMLInputElement).checked;
 
 	if (chrome.storage && chrome.storage.local) {
-		chrome.storage.local.set({ letters, autocheckOn }, function () {
-			if (chrome.runtime.lastError) {
-				console.error("Error saving state:", chrome.runtime.lastError);
+		chrome.storage.local.set(
+			{ [STORAGE_KEYS.LETTERS]: letters, [STORAGE_KEYS.AUTOCHECK_ON]: autocheckOn },
+			function () {
+				if (chrome.runtime.lastError) {
+					console.error("Error saving state:", chrome.runtime.lastError);
+					return;
+				}
 			}
-		});
+		);
 	} else {
 		console.error("Chrome storage API is not available");
 	}
@@ -35,25 +41,25 @@ export function saveState() {
 
 export function loadSavedState() {
 	if (chrome.storage && chrome.storage.local) {
-		chrome.storage.local.get(["letters", "autocheckOn"], function (result) {
+		chrome.storage.local.get([STORAGE_KEYS.LETTERS, STORAGE_KEYS.AUTOCHECK_ON], function (result) {
 			if (chrome.runtime.lastError) {
 				console.error("Error loading state:", chrome.runtime.lastError);
 				return;
 			}
 
-			const letterInputs = document.querySelectorAll<HTMLInputElement>(".letter-input");
-			const checkbox = document.getElementById("autocheck-toggle") as HTMLInputElement;
+			const letterInputs = document.querySelectorAll<HTMLInputElement>(SELECTORS.LETTER_INPUT);
+			const checkbox = document.getElementById(SELECTORS.AUTOCHECK_TOGGLE) as HTMLInputElement;
 
-			if (result.letters) {
-				result.letters.forEach((letter: string, index: number) => {
+			if (result[STORAGE_KEYS.LETTERS]) {
+				result[STORAGE_KEYS.LETTERS].forEach((letter: string, index: number) => {
 					if (letterInputs[index]) {
 						letterInputs[index].value = letter;
 					}
 				});
 			}
 
-			if (result.autocheckOn !== undefined) {
-				checkbox.checked = result.autocheckOn;
+			if (result[STORAGE_KEYS.AUTOCHECK_ON] !== undefined) {
+				checkbox.checked = result[STORAGE_KEYS.AUTOCHECK_ON];
 			}
 
 			// Focus on the first empty input

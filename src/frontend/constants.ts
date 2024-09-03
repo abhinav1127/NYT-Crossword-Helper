@@ -1,8 +1,8 @@
 export const SELECTORS = {
 	LETTER_INPUT: ".letter-input",
-	AUTOCHECK_TOGGLE: "#autocheck-toggle",
-	REVEAL_BUTTON: "#reveal-button",
-	LETTER_INPUT_WRAPPER: "#letter-input-wrapper",
+	AUTOCHECK_TOGGLE: "autocheck-toggle",
+	REVEAL_BUTTON: "reveal-button",
+	LETTER_INPUT_WRAPPER: "letter-input-wrapper",
 	FEEDBACK: "feedback",
 };
 
