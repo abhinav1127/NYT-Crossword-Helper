@@ -1,5 +1,7 @@
+import { SELECTORS } from "./constants";
+
 export function showFeedback(message: string, state: "working" | "success" | "error") {
-	const feedback = document.getElementById("feedback");
+	const feedback = document.getElementById(SELECTORS.FEEDBACK);
 	if (feedback) {
 		let emoji = "";
 		switch (state) {
