@@ -1,11 +1,12 @@
 import { handleInput, handleKeydown, handleWrapperClick, handleReveal } from "./handlers";
 import { loadSavedState, saveState, sendMessageToActiveTab } from "./dataFlow";
+import { SELECTORS, VALID_INPUT_REGEX } from "./constants";
 
 document.addEventListener("DOMContentLoaded", function () {
-	const checkbox = document.getElementById("autocheck-toggle") as HTMLInputElement;
-	const letterInputs = document.querySelectorAll<HTMLInputElement>(".letter-input");
-	const revealButton = document.getElementById("reveal-button") as HTMLButtonElement;
-	const wrapper = document.getElementById("letter-input-wrapper");
+	const checkbox = document.getElementById(SELECTORS.AUTOCHECK_TOGGLE) as HTMLInputElement;
+	const letterInputs = document.querySelectorAll<HTMLInputElement>(SELECTORS.LETTER_INPUT);
+	const revealButton = document.getElementById(SELECTORS.REVEAL_BUTTON) as HTMLButtonElement;
+	const wrapper = document.getElementById(SELECTORS.LETTER_INPUT_WRAPPER);
 	wrapper?.addEventListener("click", handleWrapperClick);
 
 	// Load saved state
@@ -24,7 +25,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		input.addEventListener("keydown", (e) => handleKeydown(e, index));
 		input.addEventListener("beforeinput", (e) => {
 			const inputChar = e.data;
-			if (inputChar && !/^[a-zA-Z]$/.test(inputChar)) {
+			if (inputChar && !VALID_INPUT_REGEX.test(inputChar)) {
 				e.preventDefault();
 			}
 		});
