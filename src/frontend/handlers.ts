@@ -1,9 +1,10 @@
 import { sendMessageToActiveTab, saveState } from "./dataFlow";
 import { showFeedback } from "./feedback";
+import { SELECTORS, VALID_INPUT_REGEX } from "./constants";
 
 export function handleWrapperClick(e: MouseEvent) {
-	if (!(e.target as HTMLElement).classList.contains("letter-input")) {
-		const emptyInput = Array.from(document.querySelectorAll<HTMLInputElement>(".letter-input")).find(
+	if (!(e.target as HTMLElement).classList.contains(SELECTORS.LETTER_INPUT.slice(1))) {
+		const emptyInput = Array.from(document.querySelectorAll<HTMLInputElement>(SELECTORS.LETTER_INPUT)).find(
 			(input) => !input.value
 		);
 		emptyInput?.focus();
@@ -29,7 +30,7 @@ export function handleKeydown(e: KeyboardEvent, index: number) {
 	} else if (e.key === "ArrowRight") {
 		e.preventDefault();
 		focusNextInput(index);
-	} else if (/^[a-zA-Z]$/.test(e.key)) {
+	} else if (VALID_INPUT_REGEX.test(e.key)) {
 		e.preventDefault();
 		input.value = e.key.toUpperCase();
 		focusNextInput(index);
@@ -38,13 +39,15 @@ export function handleKeydown(e: KeyboardEvent, index: number) {
 }
 
 function focusNextInput(currentIndex: number) {
-	const nextInput = document.querySelector<HTMLInputElement>(`.letter-input:nth-child(${currentIndex + 2})`);
+	const nextInput = document.querySelector<HTMLInputElement>(
+		`${SELECTORS.LETTER_INPUT}:nth-child(${currentIndex + 2})`
+	);
 	nextInput?.focus();
 }
 
 function focusPreviousInput(currentIndex: number, erase: boolean) {
 	if (currentIndex > 0) {
-		const prevInput = document.querySelector<HTMLInputElement>(`.letter-input:nth-child(${currentIndex})`);
+		const prevInput = document.querySelector<HTMLInputElement>(`${SELECTORS.LETTER_INPUT}:nth-child(${currentIndex})`);
 		if (prevInput) {
 			prevInput.focus();
 			if (erase) {
@@ -55,10 +58,10 @@ function focusPreviousInput(currentIndex: number, erase: boolean) {
 }
 
 export async function handleReveal() {
-	const letters = Array.from(document.querySelectorAll<HTMLInputElement>(".letter-input"))
+	const letters = Array.from(document.querySelectorAll<HTMLInputElement>(SELECTORS.LETTER_INPUT))
 		.filter((input) => input.value)
 		.map((input) => input.value);
-	const autocheckOn = (document.getElementById("autocheck-toggle") as HTMLInputElement).checked;
+	const autocheckOn = (document.getElementById(SELECTORS.AUTOCHECK_TOGGLE) as HTMLInputElement).checked;
 
 	if (letters.length == 0) {
 		showFeedback("Letters to reveal must not be empty.", "error");
