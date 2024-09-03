@@ -58,7 +58,11 @@ export function loadSavedState() {
 
 			// Focus on the first empty input
 			const firstEmptyInput = Array.from(letterInputs).find((input) => !input.value);
-			firstEmptyInput?.focus();
+			if (firstEmptyInput) {
+				firstEmptyInput?.focus();
+			} else {
+				letterInputs[letterInputs.length - 1]?.focus();
+			}
 		});
 	} else {
 		console.error("Chrome storage API is not available");
