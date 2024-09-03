@@ -58,6 +58,12 @@ function focusPreviousInput(currentIndex: number, erase: boolean) {
 }
 
 export async function handleReveal() {
+	const revealButton = document.getElementById(SELECTORS.REVEAL_BUTTON) as HTMLButtonElement;
+	if (revealButton.disabled) {
+		return;
+	}
+	revealButton.disabled = true;
+
 	const letters = Array.from(document.querySelectorAll<HTMLInputElement>(SELECTORS.LETTER_INPUT))
 		.filter((input) => input.value)
 		.map((input) => input.value);
@@ -84,5 +90,7 @@ export async function handleReveal() {
 	} catch (error) {
 		console.error(error);
 		showFeedback(`An error occurred: ${error instanceof Error ? error.message : JSON.stringify(error)}`, "error");
+	} finally {
+		revealButton.disabled = false;
 	}
 }
