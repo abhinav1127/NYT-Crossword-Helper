@@ -5,7 +5,7 @@
 	"main": "main.js",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
-		"build": "webpack && cp manifest.json src/frontend/popup.html dist/",
+		"build": "webpack && cp manifest.json src/frontend/popup.html icon128.png dist/",
 		"format": "prettier --write \"src/**/*.ts\"",
 		"format:check": "prettier --check \"src/**/*.ts\"",
 		"lint": "eslint src/**/*.ts",
