@@ -66,3 +66,8 @@ A Chrome extension that reveals certain letters on NYT crosswords!
 ## License
 
 This project is licensed under the ISC License.
+
+## Credits
+
+Creator and Lead Developer: Abhinav Tirath
+Icon design: Nikitha Vadi
