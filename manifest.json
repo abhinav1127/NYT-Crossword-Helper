@@ -2,7 +2,7 @@
 	"manifest_version": 3,
 	"name": "NYT Crossword Helper",
 	"version": "1.0",
-	"description": "Reveals certain letters on NYT crossword",
+	"description": "Make challenging crosswords more fun! Reveals some letters in NYT puzzles to help you get unstuck.",
 	"permissions": ["activeTab", "storage"],
 	"action": {
 		"default_popup": "popup.html",
