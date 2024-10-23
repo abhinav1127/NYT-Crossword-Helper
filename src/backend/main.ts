@@ -47,7 +47,8 @@ const clearPuzzle = async (): Promise<void> => {
 	const numOfCluesAcross =
 		document.querySelector(".xwd__clue-list--list").querySelectorAll(".xwd__clue--li").length || 0;
 
-	for (let x = 0; x < numOfCluesAcross; x++) {
+	// Prior to adding 10 to the numOfCluesAcross, the puzzle did not clear completely; I never figured out why
+	for (let x = 0; x < numOfCluesAcross + 10; x++) {
 		const currSelectedLetters = document.querySelectorAll(".xwd__cell--highlighted");
 		const lastElement = currSelectedLetters[currSelectedLetters.length - 1];
 		const selectedCell = document.querySelector(".xwd__cell--selected");
