@@ -1,6 +1,6 @@
 {
 	"manifest_version": 3,
-	"name": "NYT Crossword Helper",
+	"name": "NYT Crossword Magic Revealer",
 	"version": "1.0",
 	"description": "Make challenging crosswords more fun! Reveals some letters in NYT puzzles to help you get unstuck.",
 	"permissions": ["activeTab", "storage"],
