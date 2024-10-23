@@ -5,16 +5,16 @@
 	"description": "Reveals certain letters on NYT crossword",
 	"permissions": ["activeTab", "storage"],
 	"action": {
-		"default_popup": "dist/popup.html",
-		"default_icon": "dist/icon128.png"
+		"default_popup": "popup.html",
+		"default_icon": "icon128.png"
 	},
 	"icons": {
-		"128": "dist/icon128.png"
+		"128": "icon128.png"
 	},
 	"content_scripts": [
 		{
 			"matches": ["https://www.nytimes.com/crosswords/game/*"],
-			"js": ["dist/main.js"]
+			"js": ["main.js"]
 		}
 	]
 }
