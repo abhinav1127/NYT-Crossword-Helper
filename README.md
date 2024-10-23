@@ -2,11 +2,12 @@
 
 A Chrome extension that reveals certain letters on NYT crosswords!
 
-## Features
+## Procedure
 
 - Automatically enables the "Autocheck" feature.
-- Fills the crossword puzzle with letters.
-- Clears the puzzle after filling it.
+- Attempts all the selected letters on each crossword tile.
+- Clears the incorrect submissions.
+- Optionally, disables "Autocheck"
 
 ## Installation
 
